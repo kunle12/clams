@@ -9,7 +9,17 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 #  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
 #set(ROS_BUILD_TYPE RelWithDebInfo)
 
+set(ENV{ROS_BOOST_LIB_DIR_NAME}  "/usr/lib/x86_64-linux-gnu") #for 64bit system
+
 rosbuild_init()
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../external/pcl_1_7/git/cmake/Modules/" ${CMAKE_MODULE_PATH})
+
+include(FindPkgConfig)
+
+find_package(Eigen REQUIRED)
+find_package(OpenCV REQUIRED)
+include_directories(SYSTEM ${EIGEN_INCLUDE_DIRS})
 
 #set the default path for built executables to the "bin" directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
@@ -40,4 +50,4 @@ rosbuild_add_compile_flags(stream_sequence -Wno-deprecated -Wno-unused-but-set-v
 #target_link_libraries(example ${PROJECT_NAME})
 
 rosbuild_add_executable(sseq_to_freiburg src/prog/sseq_to_freiburg.cpp)
-target_link_libraries(sseq_to_freiburg stream_sequence)
+target_link_libraries(sseq_to_freiburg stream_sequence ${OpenCV_LIBS})

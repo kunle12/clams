@@ -14,7 +14,7 @@ git:
 	echo Using ssh fallback.; \
 	git clone git@github.com:PointCloudLibrary/pcl.git git; \
 	fi
-	cd git && git checkout pcl-1.7.0
+	cd git && git checkout pcl-1.9.1
 
 clean:
 	cd release && make clean

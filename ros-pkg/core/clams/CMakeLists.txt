@@ -9,6 +9,8 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 #  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
 #set(ROS_BUILD_TYPE RelWithDebInfo)
 
+set(ENV{ROS_BOOST_LIB_DIR_NAME}  "/usr/lib/x86_64-linux-gnu") #for 64bit system
+
 rosbuild_init()
 
 #set the default path for built executables to the "bin" directory
@@ -22,6 +24,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_gensrv()
 
 find_package(VTK REQUIRED)
+find_package(OpenCV REQUIRED)
 if(VTK_FOUND)
   include(${VTK_USE_FILE})
 endif()
@@ -41,19 +44,19 @@ rosbuild_add_boost_directories()
 rosbuild_link_boost(clams program_options)
 
 rosbuild_add_executable(inspect src/prog/inspect.cpp)
-target_link_libraries(inspect clams vtkCommon vtkFiltering vtkRendering)
+target_link_libraries(inspect clams ${VTK_LIBRARIES} ${OpenCV_LIBS})
 
 rosbuild_add_executable(calibrate src/prog/calibrate.cpp)
-target_link_libraries(calibrate clams)
+target_link_libraries(calibrate clams ${VTK_LIBRARIES} ${OpenCV_LIBS})
 
 rosbuild_add_executable(visualize_model src/prog/visualize_model.cpp)
-target_link_libraries(visualize_model clams)
+target_link_libraries(visualize_model clams ${VTK_LIBRARIES} ${OpenCV_LIBS})
 
 rosbuild_add_executable(convert_trajectory src/prog/convert_trajectory.cpp)
-target_link_libraries(convert_trajectory clams)
+target_link_libraries(convert_trajectory clams ${VTK_LIBRARIES} ${OpenCV_LIBS})
 
 rosbuild_add_executable(visualize_trajectory src/prog/visualize_trajectory.cpp)
-target_link_libraries(visualize_trajectory clams)
+target_link_libraries(visualize_trajectory clams ${VTK_LIBRARIES} ${OpenCV_LIBS})
 
 rosbuild_add_executable(generate_map src/prog/generate_map.cpp)
-target_link_libraries(generate_map clams)
+target_link_libraries(generate_map clams ${VTK_LIBRARIES} ${OpenCV_LIBS})
